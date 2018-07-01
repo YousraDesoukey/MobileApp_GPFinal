@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -27,6 +28,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -56,8 +58,8 @@ public class Main2Activity extends AppCompatActivity {
     TextView trial;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("kingsinfo");
-    String retrievedKingName = "Ay" ;
-    String url = "http://192.168.1.110:8000/api/hiero/image/";
+    String retrievedKingName;
+    String url = "http://192.168.1.24:8000/api/hiero/image/";
 
 
     @Override
@@ -74,23 +76,31 @@ public class Main2Activity extends AppCompatActivity {
         trial = (TextView) findViewById(R.id.textView4);
         trial.setText(imageconverter(bm));
         post();
-
-        myRef.child(retrievedKingName).addValueEventListener(new ValueEventListener() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void run() {
+                myRef.child(retrievedKingName).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot snapshot) {
 
-                if (snapshot.getKey().toString().equalsIgnoreCase(retrievedKingName)) {
-                    String name = snapshot.child("name").getValue(String.class);
-                    String desc = snapshot.child("desc").getValue(String.class);
-                    KingName.setText(name);
-                    KingDesc.setText(desc);
-                }
+            if (snapshot.getKey().toString().equalsIgnoreCase(retrievedKingName)) {
+                String name = snapshot.child("name").getValue(String.class);
+                String desc = snapshot.child("desc").getValue(String.class);
+                KingName.setText(name);
+                KingDesc.setText(desc);
             }
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                Log.e("onCancelled", " cancelled");
+        }
+        @Override
+        public void onCancelled(DatabaseError firebaseError) {
+            Log.e("onCancelled", " cancelled");
+        }
+    });
             }
-        });
+        }, 20000);
+
+
+
 //    final RequestQueue requestqueue = Volley.newRequestQueue(Main2Activity.this);
 //    StringRequest stringrequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 //        @Override
@@ -133,7 +143,8 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(getApplication(),error+"ERROR",Toast.LENGTH_LONG).show();
                 System.out.println(error);
             }
-        }){
+        })
+        {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError{
                 Map<String,String> params = new HashMap<String, String>();
@@ -146,7 +157,27 @@ public class Main2Activity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
+
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
     }
+
+
 
 
 }
