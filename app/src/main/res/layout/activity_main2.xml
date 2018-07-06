@@ -16,48 +16,52 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar"
-            />
+            <include
+                android:id="@+id/app_bar"
+                layout="@layout/app_bar"
+                />
 
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="300dp"
-            android:layout_height="250dp"
-            android:layout_alignParentTop="true"
-            android:layout_below="@id/app_bar"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="65dp"
-            />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:layout_alignParentTop="true"
+                android:layout_below="@id/app_bar"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="65dp"
+                />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageView2"
-            android:layout_centerHorizontal="true"
-            android:text="KING'S NAME"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@android:color/background_dark"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageView2"
+                android:layout_centerHorizontal="true"
+                android:text="KING'S NAME"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/background_dark"
+                android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView"
-            android:layout_centerHorizontal="true"
-            android:text="DESCRIPTION"
-            android:textColor="@android:color/background_dark" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/textView"
+                android:layout_centerHorizontal="true"
+                android:text="DESCRIPTION"
+                android:textColor="@android:color/background_dark" />
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:visibility="invisible"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
